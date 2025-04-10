@@ -114,7 +114,7 @@ body {
   z-index: 0;
   display: grid;
   grid-template-columns: 1fr 6fr 1fr;
-  grid-template-rows: 1fr 4fr;
+  grid-template-rows: 1fr 4fr 1fr;
 }
 
 .img-carousel-wrapper {
@@ -124,6 +124,7 @@ body {
   justify-content: center;
   align-items: center;
   gap: 100px;
+  position: relative;
 }
 
 .carousel-images {
@@ -154,7 +155,7 @@ body {
   position: absolute;
   top: 50%;
   left: 50%;
-  transform: translate(-50%, -25%);
+  transform: translate(-50%, -50%);
 }
 
 .arrow-wrapper {
@@ -171,4 +172,30 @@ body {
 
 .arrow-right {
   transform: rotate(180deg);
+}
+
+.progress-bar {
+  grid-column: 2;
+  grid-row: 3;
+  justify-self: center;
+  align-self: center;
+  height: 50%;
+  width: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: start;
+  gap: 20px;
+}
+
+.progress-circle {
+  height: 20px;
+  width: 20px;
+  border-radius: 50%;
+  background-color: rgba(163, 162, 168, 0.329);
+  border: 1px solid black;
+}
+
+.focus-circle {
+  transform: scale(1.2);
+  background-color: rgb(21, 21, 22);
 }

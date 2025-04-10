@@ -27,6 +27,7 @@ const carousel = {
       .querySelector(".arrow-right")
       .addEventListener("click", function () {
         carousel.slideMoveLeft();
+        carouselProgressBar.moveRight();
       });
   })(),
   leftArrowClick: (function () {
@@ -34,6 +35,7 @@ const carousel = {
       .querySelector(".arrow-left")
       .addEventListener("click", function () {
         carousel.slideMoveRight();
+        carouselProgressBar.moveLeft();
       });
   })(),
   slideMoveRight: function () {
@@ -90,4 +92,33 @@ const carousel = {
       .querySelector(".carousel-images")
       .setAttribute("src", oldLeftImage);
   },
+};
+
+const carouselProgressBar = {
+  leftProgressCircle: document.querySelector(".left-circle"),
+  middleProgressCircle: document.querySelector(".middle-circle"),
+  rightProgressCircle: document.querySelector(".right-circle"),
+  progressLocations: ["left-circle", "middle-circle", "right-circle"],
+  progressCurrentLocation: 1,
+  progressNextLocation: 2,
+
+  moveRight: function () {
+    document
+      .querySelector(`.${this.progressLocations[this.progressCurrentLocation]}`)
+      .classList.remove("focus-circle");
+    document
+      .querySelector(`.${this.progressLocations[this.progressNextLocation]}`)
+      .classList.add("focus-circle");
+
+    carouselProgressBar.progressNextLocation =
+      (carouselProgressBar.progressNextLocation + 1) %
+      carouselProgressBar.progressLocations.length;
+
+    carouselProgressBar.progressCurrentLocation =
+      (this.progressCurrentLocation + 1) % this.progressLocations.length;
+  },
+  moveLeft: function () {
+    console.log("Progress bar move to left");
+  },
+  loopInArray: function (array, propertyToModify) {},
 };
