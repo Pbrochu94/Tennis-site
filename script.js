@@ -1,5 +1,3 @@
-console.log("hello world");
-
 const hamburgerButton = {
   mouseOnListener: (function () {
     document
@@ -92,6 +90,30 @@ const carousel = {
       .querySelector(".carousel-images")
       .setAttribute("src", oldLeftImage);
   },
+  changeImageToClickedPoint: function (progPointClassArr) {
+    console.log(progPointClassArr);
+    /*if (progPointClassArr.find((element) => element === "left-circle")) {
+      document
+        .querySelector(".left-carousel-img")
+        .setAttribute("src", "img/carousel-img-3.jpg");
+      document
+        .querySelector(".middle-carousel-img")
+        .setAttribute("src", "img/carousel-img-1.jpg");
+      document
+        .querySelector(".right-carousel-img")
+        .setAttribute("src", "img/carousel-img-2.jpg");
+    }
+    if (classArray.find((element) => element === "middle-circle")) {
+      document
+        .querySelector("left-carousel-img")
+        .setAttribute("src", "img/carousel-img-1.jpg");
+    }
+    if (classArray.find((element) => element === "right-circle")) {
+      document
+        .querySelector("left-carousel-img")
+        .setAttribute("src", "img/carousel-img-1.jpg");
+    }*/
+  },
 };
 
 const carouselProgressBar = {
@@ -139,6 +161,36 @@ const carouselProgressBar = {
       this.progressNextLocation,
     );
   },
+  updatePlacement: function (classArray) {
+    if (classArray.find((element) => element === "left-circle")) {
+      carouselProgressBar.progressLastLocation = 2;
+      carouselProgressBar.progressCurrentLocation = 0;
+      carouselProgressBar.progressNextLocation = 1;
+    }
+    if (classArray.find((element) => element === "middle-circle")) {
+      carouselProgressBar.progressLastLocation = 0;
+      carouselProgressBar.progressCurrentLocation = 1;
+      carouselProgressBar.progressNextLocation = 2;
+    }
+    if (classArray.find((element) => element === "right-circle")) {
+      carouselProgressBar.progressLastLocation = 1;
+      carouselProgressBar.progressCurrentLocation = 2;
+      carouselProgressBar.progressNextLocation = 0;
+    }
+  },
+  clickEventListener: (function () {
+    document.querySelectorAll(".progress-circle").forEach(function (circleDiv) {
+      circleDiv.addEventListener("click", function () {
+        document
+          .querySelector(".focus-circle")
+          .classList.remove("focus-circle");
+        circleDiv.classList.add("focus-circle");
+        let classArray = Array.from(circleDiv.classList); //transform the clasList into an array to access find method
+        carouselProgressBar.updatePlacement(classArray);
+        carousel.changeImageToClickedPoint(classArray);
+      });
+    });
+  })(),
 };
 
 const arrayOperation = {
