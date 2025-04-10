@@ -109,16 +109,23 @@ const carouselProgressBar = {
     document
       .querySelector(`.${this.progressLocations[this.progressNextLocation]}`)
       .classList.add("focus-circle");
-
-    carouselProgressBar.progressNextLocation =
-      (carouselProgressBar.progressNextLocation + 1) %
-      carouselProgressBar.progressLocations.length;
-
-    carouselProgressBar.progressCurrentLocation =
-      (this.progressCurrentLocation + 1) % this.progressLocations.length;
+    this.progressNextLocation = arrayOperation.rightArrayLoop(
+      this.progressLocations,
+      this.progressNextLocation,
+    );
+    this.progressCurrentLocation = arrayOperation.rightArrayLoop(
+      this.progressLocations,
+      this.progressCurrentLocation,
+    );
   },
   moveLeft: function () {
     console.log("Progress bar move to left");
   },
-  loopInArray: function (array, propertyToModify) {},
+};
+
+const arrayOperation = {
+  rightArrayLoop: function (array, index) {
+    index = (index + 1) % array.length;
+    return index;
+  },
 };
