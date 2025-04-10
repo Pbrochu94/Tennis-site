@@ -27,7 +27,7 @@ const carousel = {
       .querySelector(".arrow-right")
       .addEventListener("click", function () {
         carousel.slideMoveLeft();
-        carouselProgressBar.moveRight();
+        carouselProgressBar.moveLeft();
       });
   })(),
   leftArrowClick: (function () {
@@ -35,7 +35,7 @@ const carousel = {
       .querySelector(".arrow-left")
       .addEventListener("click", function () {
         carousel.slideMoveRight();
-        carouselProgressBar.moveLeft();
+        carouselProgressBar.moveRight();
       });
   })(),
   slideMoveRight: function () {
@@ -101,6 +101,7 @@ const carouselProgressBar = {
   progressLocations: ["left-circle", "middle-circle", "right-circle"],
   progressCurrentLocation: 1,
   progressNextLocation: 2,
+  progressLastLocation: 0,
 
   moveRight: function () {
     document
@@ -109,23 +110,48 @@ const carouselProgressBar = {
     document
       .querySelector(`.${this.progressLocations[this.progressNextLocation]}`)
       .classList.add("focus-circle");
-    this.progressNextLocation = arrayOperation.rightArrayLoop(
+    [
+      this.progressNextLocation,
+      this.progressCurrentLocation,
+      this.progressLastLocation,
+    ] = arrayOperation.rightArrayLoop(
       this.progressLocations,
       this.progressNextLocation,
-    );
-    this.progressCurrentLocation = arrayOperation.rightArrayLoop(
-      this.progressLocations,
       this.progressCurrentLocation,
+      this.progressLastLocation,
     );
   },
   moveLeft: function () {
-    console.log("Progress bar move to left");
+    document
+      .querySelector(`.${this.progressLocations[this.progressCurrentLocation]}`)
+      .classList.remove("focus-circle");
+    document
+      .querySelector(`.${this.progressLocations[this.progressLastLocation]}`)
+      .classList.add("focus-circle");
+    [
+      this.progressLastLocation,
+      this.progressCurrentLocation,
+      this.progressNextLocation,
+    ] = arrayOperation.leftArrayLoop(
+      this.progressLocations,
+      this.progressLastLocation,
+      this.progressCurrentLocation,
+      this.progressNextLocation,
+    );
   },
 };
 
 const arrayOperation = {
-  rightArrayLoop: function (array, index) {
-    index = (index + 1) % array.length;
-    return index;
+  rightArrayLoop: function (array, nextIndex, currentIndex, lastIndex) {
+    nextIndex = (nextIndex + 1) % array.length;
+    currentIndex = (currentIndex + 1) % array.length;
+    lastIndex = (lastIndex + 1) % array.length;
+    return [nextIndex, currentIndex, lastIndex];
+  },
+  leftArrayLoop: function (array, lastIndex, currentIndex, nextIndex) {
+    lastIndex = (lastIndex - 1 + array.length) % array.length;
+    currentIndex = (currentIndex - 1 + array.length) % array.length;
+    nextIndex = (nextIndex - 1 + array.length) % array.length;
+    return [lastIndex, currentIndex, nextIndex];
   },
 };
