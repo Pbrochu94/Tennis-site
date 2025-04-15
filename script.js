@@ -20,6 +20,12 @@ const carousel = {
   leftImageDiv: document.querySelector(".carousel-left-wrapper"),
   rightImageDiv: document.querySelector(".carousel-right-wrapper"),
 
+  automaticSlide: (function () {
+    setInterval(function () {
+      carousel.slideMoveRight();
+      carouselProgressBar.moveRight();
+    }, 5000);
+  })(),
   rightArrowClick: (function () {
     document
       .querySelector(".arrow-right")
@@ -90,29 +96,33 @@ const carousel = {
       .querySelector(".carousel-images")
       .setAttribute("src", oldLeftImage);
   },
-  changeImageToClickedPoint: function (progPointClassArr) {
-    console.log(progPointClassArr);
-    /*if (progPointClassArr.find((element) => element === "left-circle")) {
-      document
-        .querySelector(".left-carousel-img")
-        .setAttribute("src", "img/carousel-img-3.jpg");
-      document
-        .querySelector(".middle-carousel-img")
-        .setAttribute("src", "img/carousel-img-1.jpg");
-      document
-        .querySelector(".right-carousel-img")
-        .setAttribute("src", "img/carousel-img-2.jpg");
-    }
-    if (classArray.find((element) => element === "middle-circle")) {
-      document
-        .querySelector("left-carousel-img")
-        .setAttribute("src", "img/carousel-img-1.jpg");
-    }
-    if (classArray.find((element) => element === "right-circle")) {
-      document
-        .querySelector("left-carousel-img")
-        .setAttribute("src", "img/carousel-img-1.jpg");
-    }*/
+  changeImageToClickedPoint: function (clickedDot) {
+    let indexOfProgressDot = arrayOperation.progressDotArr.indexOf(
+      clickedDot[0],
+    );
+    let progressDotArrLength = arrayOperation.progressDotArr.length;
+    document
+      .querySelector(".carousel-focus>img")
+      .setAttribute(
+        "src",
+        arrayOperation.imageObjArr[indexOfProgressDot].imgLink,
+      );
+    document
+      .querySelector(".carousel-left-wrapper>img")
+      .setAttribute(
+        "src",
+        arrayOperation.imageObjArr[
+          (indexOfProgressDot - 1 + progressDotArrLength) % progressDotArrLength
+        ].imgLink,
+      );
+    document
+      .querySelector(".carousel-right-wrapper>img")
+      .setAttribute(
+        "src",
+        arrayOperation.imageObjArr[
+          (indexOfProgressDot + 1) % progressDotArrLength
+        ].imgLink,
+      );
   },
 };
 
@@ -186,6 +196,7 @@ const carouselProgressBar = {
           .classList.remove("focus-circle");
         circleDiv.classList.add("focus-circle");
         let classArray = Array.from(circleDiv.classList); //transform the clasList into an array to access find method
+        classArray = classArray.splice(1, 1); //get the second class name in the list (I.E right-circle)
         carouselProgressBar.updatePlacement(classArray);
         carousel.changeImageToClickedPoint(classArray);
       });
@@ -194,6 +205,24 @@ const carouselProgressBar = {
 };
 
 const arrayOperation = {
+  progressDotArr: ["left-circle", "middle-circle", "right-circle"],
+  imageObjArr: [
+    {
+      imgPosition: "left-image",
+      imgLink: "img/carousel-img-1.jpg",
+      indexPosition: 0,
+    },
+    {
+      imgPosition: "middle-image",
+      imgLink: "img/carousel-img-2.jpg",
+      indexPosition: 1,
+    },
+    {
+      imgPosition: "right-image",
+      imgLink: "img/carousel-img-3.jpg",
+      indexPosition: 2,
+    },
+  ],
   rightArrayLoop: function (array, nextIndex, currentIndex, lastIndex) {
     nextIndex = (nextIndex + 1) % array.length;
     currentIndex = (currentIndex + 1) % array.length;
